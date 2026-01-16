@@ -1,0 +1,28 @@
+enable
+config t
+
+service password-encryption
+enable secret P@$$w0rd
+no ip domain-lookup
+ip default-gateway 192.168.0.1
+banner motd $Authorized Users only!$
+
+line con 0
+password P@$$w0rd
+login
+logging synchronous
+exit
+
+line vty 0 15
+password P@$$w0rd
+login
+logging synchronous
+exit
+
+interface vlan1
+ip address 192.168.1.11 255.255.255.0
+no shutdown
+exit
+
+exit
+copy run start

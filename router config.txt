@@ -1,0 +1,41 @@
+enable
+config t
+
+hostname R1
+service password-encryption
+enable secret P@$$w0rd
+
+ip domain-name cisco.com
+username admin secret P@$$w0rd
+crypto key generate rsa
+login block-for 2 attempts 3 within 30
+
+no ip domain-lookup
+banner motd $Authorized Users only!$
+
+line con 0
+password P@$$w0rd
+login
+logging synchronous
+exit
+ 
+line vty 0 4
+password P@$$w0rd
+login
+logging synchronous
+transport input ssh
+login local
+exit
+
+interface GE0/0
+ip address 192.168.0.1 255.255.255.0
+no shutdown
+exit
+
+interface GE0/1
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+exit
+
+exit
+copy run start
